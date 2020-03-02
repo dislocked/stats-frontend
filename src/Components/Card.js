@@ -646,7 +646,7 @@ function Card(){
         <div className="content-container">
           <div className="fw-container bg-dark" style={{backgroundImage: require(`../images/banners/${team.toString().toLowerCase()}.png`)}}>
             <div className="container-large flex top-container">
-              <div className="player-card player-card-shadow player-card-large bg-image2" style={{ backgroundImage: `url(require("https://mdn.mozillademos.org/files/6457/mdn_logo_only_color.png"))` }}>
+              <div className="player-card player-card-shadow player-card-large bg-image2">
                 <div className="player-card-position">{pos}</div>
                 <div className="player-card-ovr">{ovr}</div>
                 <div className="player-card-name">{name}</div>
