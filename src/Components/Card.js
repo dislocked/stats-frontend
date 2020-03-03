@@ -38,6 +38,7 @@ function Card(){
     const [t2, setT2] = useState(0);
     const [t3, setT3] = useState(0);
     const [t4, setT4] = useState(0);
+    const [t0real, setT0real] = useState(true);
     const [t1real, setT1real] = useState(true);
     const [t2real, setT2real] = useState(true);
     const [t3real, setT3real] = useState(true);
@@ -459,6 +460,9 @@ function Card(){
         }
         setT0(ovrt1);
         setT0team(usert1[0].team);
+        setT0real(true)
+      }else{
+        setT0real(false)
       }
     }
 
@@ -644,7 +648,7 @@ function Card(){
     return(
       <div>
         <div className="content-container">
-          <div className="fw-container bg-dark" style={{backgroundImage: require(`../images/banners/${team.toString().toLowerCase()}.png`)}}>
+          <div className="fw-container bg-dark" style={{backgroundImage: require(`../images/banners/${team.toString().toLowerCase()}.png`)}} >
             <div className="container-large flex top-container">
               <div className="player-card player-card-shadow player-card-large bg-image2">
                 <div className="player-card-position">{pos}</div>
@@ -673,15 +677,17 @@ function Card(){
                 <p className="description subtle-text">{name} es un futbolista con una media de {ovr} en la posicion de {pos}. {name} es un jugador perteneciente al equipo {team} de IOSoccer.</p>
                 <div>
                   <ul className="versions-list">
-                    <button className="abutton" onClick={r => setTID(String("t0"))}>
-                    <li className="versions-list-el">
-                    <span className="stat stat_tier_2" style={{backgroundColor: t0 >= 90 ? '#02fec5': t0 >= 80 && t0 < 90 ? '#a8fe02' : t0 >= 70 && t0 < 80 ? '#fbb206' : 'red' }}>
-                    {t0}</span>
-                    <img className="club-flag versions-list-flag" src={require(`../images/clubs/${t0team.toString().toLowerCase()}.png`)} title={t0team} />
-                    <span className="game">
-                    Temporada 0</span>
-                    </li>
-                    </button>
+                    <div>
+                      {t0real ? <button className="abutton" onClick={r => setTID(String("t0"))}>
+                      <li className="versions-list-el">
+                      <span className="stat stat_tier_2" style={{backgroundColor: t0 >= 90 ? '#02fec5': t0 >= 80 && t0 < 90 ? '#a8fe02' : t0 >= 70 && t0 < 80 ? '#fbb206' : 'red' }}>
+                      {t0}</span>
+                      <img className="club-flag versions-list-flag" src={require(`../images/clubs/${t0team.toString().toLowerCase()}.png`)} title={t0team} />
+                      <span className="game">
+                      Temporada 0</span>
+                      </li>
+                      </button> : null}
+                    </div>
                     <div>
                     {t1real ? <button className="abutton" onClick={r => setTID(String("t1")) && setActualovr(t1)}>
                       <li className="versions-list-el">

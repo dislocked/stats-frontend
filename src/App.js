@@ -15,7 +15,7 @@ function App(){
         <Switch>
           <Route path="/" exact component={Db} />
           <Route path="/players" component={Home} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/profile" exact component={Profile} />
         </Switch>
       </div>
     </Router>
