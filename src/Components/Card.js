@@ -126,9 +126,17 @@ function Card(){
     if(val_def>=val_del){
       if(val_def>=val_mca){
         if(val_def>=val_mcd){
-          pos = "CB";
+          if(val_def>=val_gk){
+            pos = "CB";
+          }else{
+            pos = "GK";
+          }
         }else{
-          pos = "MCD";
+          if(val_mcd>=val_gk){
+            pos = "MCD";
+          }else{
+            pos = "GK";
+          } 
         }
       }else{
         if(val_mca>=val_mcd){
@@ -707,6 +715,11 @@ function Card(){
                   {Math.trunc(CC)}
                   <span className="player-card-stats-name"> CC</span>
                 </div>
+                <div className="stats-col-2">
+                  {Math.trunc(CP)}
+                  <span className="player-card-stats-name"> CP</span>
+                  <br></br>
+                </div>
                 <div className="stats-col-bg"></div>
               </div>
               <div className="top-info">
@@ -889,6 +902,26 @@ function Card(){
                   <tr>
                     <td>Posicion</td>
                     <td>{pos}</td>
+                  </tr>
+                  <tr>
+                    <td>Goles</td>
+                    <td>{goals}</td>
+                  </tr>
+                  <tr>
+                    <td>Asistencias</td>
+                    <td>{assists}</td>
+                  </tr>
+                  <tr>
+                    <td>Pases</td>
+                    <td>{passes}</td>
+                  </tr>
+                  <tr>
+                    <td>Intercepciones</td>
+                    <td>{interceptions}</td>
+                  </tr>
+                  <tr>
+                    <td>Atajadas</td>
+                    <td>{saves}</td>
                   </tr>
                 </tbody>
               </table>

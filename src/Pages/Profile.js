@@ -68,7 +68,7 @@ class Profile extends React.Component {
     if (!this.state.loading) { 
 
       return <div>
-          <div> 
+          <div className="espacio"> 
             <Card />
           </div>
         </div>

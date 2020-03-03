@@ -1,15 +1,20 @@
 import React from 'react';
+import { Button, Navbar } from 'react-bootstrap';
 import '../App.css'
 
 function Nav(){
     return(
-        <nav className="nav">
-            <img src={require('../images/logo-solo.png')}></img>
-            <ul>
-                <li>Home</li>
-                <li>Players</li>
-            </ul>
-        </nav>
+            <Navbar bg="light" className="header-container" fixed="top">
+                <Navbar.Brand href="../">
+                    <img
+                        alt=""
+                        src={require(`../images/logo-iossa-black.png`)}
+                        width="194"
+                        height="50"
+                        className="d-inline-block align-top"
+                    />{' '}
+                </Navbar.Brand>
+            </Navbar>
     )
 }
 
