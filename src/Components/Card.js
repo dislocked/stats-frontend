@@ -228,7 +228,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/t1`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
@@ -284,7 +284,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/t2`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
@@ -340,7 +340,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/t3`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
@@ -396,7 +396,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/t4`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
@@ -453,7 +453,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/t0`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
@@ -509,7 +509,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/maradei`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
@@ -565,7 +565,7 @@ function Card(){
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/master`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
-      if(usert1[0])
+      if(usert1[0] && usert1[0].matches > 3)
       {
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
