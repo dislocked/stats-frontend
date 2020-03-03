@@ -892,6 +892,10 @@ function Card(){
                     <td>{name}</td>
                   </tr>
                   <tr>
+                    <td>SteamID</td>
+                    <td>{id}</td>
+                  </tr>
+                  <tr>
                     <td>Equipo</td>
                     <td>{team}</td>
                   </tr>
@@ -935,8 +939,8 @@ function Card(){
                       <span className="stat_tier_2 stat" style={{backgroundColor: AF >= 90 ? '#02fec5': AF >= 80 && AF < 90 ? '#a8fe02' : AF >= 70 && AF < 80 ? '#fbb206' : 'red' }}>{Math.trunc(AF)}</span>
                       Poder Ofensivo
                     </h4>
-                    <div className="star-bar">
-                      <div className="stat_tier_2" style={{width: 91}}></div>
+                    <div className="star-bar" style={{background: '#e6e6e6', height: '8px', position: 'relative', borderRadius: '5px', marginBottom: '15px', width: '400px'}}>
+                      <div className="stat_tier_2 stat-bar-div" style={{backgroundColor: AF >= 90 ? '#02fec5': AF >= 80 && AF < 90 ? '#a8fe02' : AF >= 70 && AF < 80 ? '#fbb206' : 'red', width: `${AF}%`}}></div>
                     </div>
                     <table className="player-stats-modern">
                       <tbody>
@@ -960,8 +964,8 @@ function Card(){
                       <span className="stat_tier_2 stat" style={{backgroundColor: AD >= 90 ? '#02fec5': AD >= 80 && AD < 90 ? '#a8fe02' : AD >= 70 && AD < 80 ? '#fbb206' : 'red' }}>{Math.trunc(AD)}</span>
                       Aptitud Defensiva
                     </h4>
-                    <div className="star-bar">
-                      <div className="stat_tier_2" style={{width: 91}}></div>
+                    <div className="star-bar" style={{background: '#e6e6e6', height: '8px', position: 'relative', borderRadius: '5px', marginBottom: '15px', width: '400px'}}>
+                      <div className="stat_tier_2 stat-bar-div" style={{backgroundColor: AD >= 90 ? '#02fec5': AD >= 80 && AF < 90 ? '#a8fe02' : AD >= 70 && AD < 80 ? '#fbb206' : 'red', width: `${AD}%`}}></div>
                     </div>
                     <table className="player-stats-modern">
                       <tbody>
@@ -985,8 +989,8 @@ function Card(){
                       <span className="stat_tier_2 stat" style={{backgroundColor: CC >= 90 ? '#02fec5': CC >= 80 && CC < 90 ? '#a8fe02' : CC >= 70 && CC < 80 ? '#fbb206' : 'red' }}>{Math.trunc(CC)}</span>
                       Capacidad Creativa
                     </h4>
-                    <div className="star-bar">
-                      <div className="stat_tier_2" style={{width: 91}}></div>
+                    <div className="star-bar" style={{background: '#e6e6e6', height: '8px', position: 'relative', borderRadius: '5px', marginBottom: '15px', width: '400px'}}>
+                      <div className="stat_tier_2 stat-bar-div" style={{backgroundColor: CC >= 90 ? '#02fec5': CC >= 80 && CC < 90 ? '#a8fe02' : CC >= 70 && CC < 80 ? '#fbb206' : 'red', width: `${CC}%`}}></div>
                     </div>
                     <table className="player-stats-modern">
                       <tbody>
@@ -1010,8 +1014,8 @@ function Card(){
                       <span className="stat_tier_2 stat" style={{backgroundColor: CP >= 90 ? '#02fec5': CP >= 80 && CP < 90 ? '#a8fe02' : CP >= 70 && CP < 80 ? '#fbb206' : 'red' }}>{Math.trunc(CP)}</span>
                       Capacidad Portero
                     </h4>
-                    <div className="star-bar">
-                      <div className="stat_tier_2" style={{width: 91}}></div>
+                    <div className="star-bar" style={{background: '#e6e6e6', height: '8px', position: 'relative', borderRadius: '5px', marginBottom: '15px', width: '400px'}}>
+                      <div className="stat_tier_2 stat-bar-div" style={{backgroundColor: CP >= 90 ? '#02fec5': CP >= 80 && CP < 90 ? '#a8fe02' : CP >= 70 && AF < 80 ? '#fbb206' : 'red', width: `${CP}%`}}></div>
                     </div>
                     <table className="player-stats-modern">
                       <tbody>
@@ -1033,7 +1037,7 @@ function Card(){
         </div>
         <div className="">
         <>
-        <img src={avatar}></img>
+        
         </>
         
       </div>

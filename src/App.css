@@ -703,3 +703,11 @@ td {
 .espacio{
   margin-top: 60px;
 }
+
+.stat-bar-div {
+  height: 100%;
+  border: 0;
+  left: 0;
+  top: 0;
+  border-radius: 5px;
+}
