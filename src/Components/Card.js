@@ -35,6 +35,7 @@ function Card(){
     const [possession, setPossession] = useState(0);
     const [saves, setSaves] = useState(0);
     const [savescaught, setSavescaught] = useState(0);
+    const [goalsconceded, setGoalsconceded] = useState(0);
     const [t0, setT0] = useState(0);
     const [t1, setT1] = useState(0);
     const [t2, setT2] = useState(0);
@@ -74,7 +75,7 @@ function Card(){
     const AF = ((goals*15+shotsontarget+assists*10)/matches)*2.05;
     const AD = ((interceptions/matches)*2.5+(tacklescompleted/matches))*2.05;
     const CC = ((passescompleted+assists*10+possession*10)/matches)*2.05;
-    const CP = ((savescaught/matches)*8)*2.05;
+    const CP = ((savescaught/matches)*9-(goalsconceded/matches))*2.05;
     console.log(CP);
     const val_def = (AD * 2.8 + AF / 3 + CC / 2.5)/3;
     const val_del = ( AF * 2.8 + AD / 3 + CC / 2.5)/3;
@@ -173,6 +174,7 @@ function Card(){
       setPossession(user[0].possession);
       setSaves(user[0].saves);
       setSavescaught(user[0].savescaught);
+      setGoalsconceded(user[0].goalsconceded);
       console.log(user[0]);
       console.log("XD 2!");
     }
@@ -223,7 +225,7 @@ function Card(){
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
       const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
       const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
       const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
       const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -279,7 +281,7 @@ function Card(){
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
       const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
       const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
       const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
       const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -335,7 +337,7 @@ function Card(){
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
       const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
       const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
       const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
       const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -391,7 +393,7 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
         const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -448,7 +450,7 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
         const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -504,7 +506,7 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
         const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -560,7 +562,7 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*8)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
         const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
@@ -831,7 +833,7 @@ function Card(){
                         battery: ((goals*15+shotsontarget+assists*10)/matches)*2.05/100,
                         design: ((interceptions/matches)*2.5+(tacklescompleted/matches))*2.05/100,
                         useful: ((passescompleted+assists*10+possession*10)/matches)*2.05/100,
-                        poderio: ((savescaught/matches)*8)*2.05/100,
+                        poderio: ((savescaught/matches)*9-(goalsconceded/matches))*2.05/100,
                       },
                       meta: { color: '#58FCEC' }
                     },
@@ -987,10 +989,6 @@ function Card(){
                         <tr>
                           <td className="stat_tier_3 stat" style={{backgroundColor: (savescaught/saves*100) >= 80 ? '#02fec5': (savescaught/saves*100) >= 60 && (savescaught/saves*100) < 80 ? '#a8fe02' : (savescaught/saves*100) >= 40 && (savescaught/saves*100) < 60 ? '#fbb206' : 'red' }}>{Math.trunc(savescaught/saves*100)}</td>
                           <td>Efectividad de atrapada</td>
-                        </tr>
-                        <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: possession >= 12 ? '#02fec5': possession >= 8 && possession < 12 ? '#a8fe02' : possession >= 5 && possession < 8 ? '#fbb206' : 'red' }}>{Math.trunc(possession*7)}</td>
-                          <td>Reflejos</td>
                         </tr>
                       </tbody>
                     </table>
