@@ -33,6 +33,8 @@ function Card(){
     const [tackles, setTackles] = useState(0);
     const [tacklescompleted, setTacklescompleted] = useState(0);
     const [possession, setPossession] = useState(0);
+    const [saves, setSaves] = useState(0);
+    const [savescaught, setSavescaught] = useState(0);
     const [t0, setT0] = useState(0);
     const [t1, setT1] = useState(0);
     const [t2, setT2] = useState(0);
@@ -55,8 +57,6 @@ function Card(){
     const [t3team, setT3team] = useState(0);
     const [t4team, setT4team] = useState(0);
 
-
-
     const players = require("./players.json");
     const torneos = require("./torneos.json");
     const [playerID, setPlayerID] = useState("STEAM_0:0:41134189");
@@ -74,13 +74,16 @@ function Card(){
     const AF = ((goals*15+shotsontarget+assists*10)/matches)*2.05;
     const AD = ((interceptions/matches)*2.5+(tacklescompleted/matches))*2.05;
     const CC = ((passescompleted+assists*10+possession*10)/matches)*2.05;
+    const CP = ((savescaught/matches)*10)*2.05;
+    console.log(CP);
     const val_def = (AD * 2.8 + AF / 3 + CC / 2.5)/3;
     const val_del = ( AF * 2.8 + AD / 3 + CC / 2.5)/3;
-    const val_mca = ( CC * 2.8 + AD / 4.2 + AF / 3.1) / 3;
-    const val_mcd = ( CC * 2.8 + AD / 3.1 + AF / 4.2) / 3;
+    const val_mca = ( CC * 2.8 + AD / 5.8 + AF * 0.5) / 3;
+    const val_mcd = ( CC * 2.8 + AD * 0.5 + AF / 5.8) / 3;
+    const val_gk = CP;
+    //const val_mca = ( CC * 2.8 + AD / 4.2 + AF / 3.1) / 3;
+    //const val_mcd = ( CC * 2.8 + AD / 3.1 + AF / 4.2) / 3;
     const ovrT = Math.trunc((t1+t2+t3+t4)/4);
-    console.log("a ver xd");
-    console.log(ovrT);
     let ovr;
     let ovrt1;
     let pos;
@@ -113,6 +116,10 @@ function Card(){
         }
       }
     }
+    if(ovr<CP){
+      ovr = Math.trunc(CP);
+    }
+
     console.log(actualovr);
 
     if(val_def>=val_del){
@@ -164,6 +171,8 @@ function Card(){
       setTackles(user[0].tackles);
       setTacklescompleted(user[0].tacklescompleted);
       setPossession(user[0].possession);
+      setSaves(user[0].saves);
+      setSavescaught(user[0].savescaught);
       console.log(user[0]);
       console.log("XD 2!");
     }
@@ -214,10 +223,11 @@ function Card(){
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
       const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
       const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
       const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
       let ovrt1;
       let pos;
       if(val_deft1>=val_delt1){
@@ -248,6 +258,9 @@ function Card(){
             ovrt1 = Math.trunc(val_mcdt1);
           }
         }
+      }
+      if(ovrt1<CPT1){
+        ovrt1=Math.trunc(CPT1);
       }
       setT1(ovrt1);
       setT1team(usert1[0].team);
@@ -266,10 +279,11 @@ function Card(){
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
       const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
       const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
       const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
       let ovrt1;
       let pos;
       if(val_deft1>=val_delt1){
@@ -300,6 +314,9 @@ function Card(){
             ovrt1 = Math.trunc(val_mcdt1);
           }
         }
+      }
+      if(ovrt1<CPT1){
+        ovrt1=Math.trunc(CPT1);
       }
       setT2(ovrt1);
       setT2team(usert1[0].team);
@@ -318,10 +335,11 @@ function Card(){
       const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
       const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
       const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+      const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
       const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
       const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
       let ovrt1;
       let pos;
       if(val_deft1>=val_delt1){
@@ -353,6 +371,9 @@ function Card(){
           }
         }
       }
+      if(ovrt1<CPT1){
+        ovrt1=Math.trunc(CPT1);
+      }
       setT3(ovrt1);
       setT3team(usert1[0].team);
       setT3real(true)
@@ -370,10 +391,11 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -404,6 +426,9 @@ function Card(){
               ovrt1 = Math.trunc(val_mcdt1);
             }
           }
+        }
+        if(ovrt1<CPT1){
+          ovrt1=Math.trunc(CPT1);
         }
         setT4(ovrt1);
         setT4team(usert1[0].team);
@@ -423,10 +448,11 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -457,6 +483,9 @@ function Card(){
               ovrt1 = Math.trunc(val_mcdt1);
             }
           }
+        }
+        if(ovrt1<CPT1){
+          ovrt1=Math.trunc(CPT1);
         }
         setT0(ovrt1);
         setT0team(usert1[0].team);
@@ -475,10 +504,11 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -510,6 +540,9 @@ function Card(){
             }
           }
         }
+        if(ovrt1<CPT1){
+          ovrt1=Math.trunc(CPT1);
+        }
         setMaradei(ovrt1);
         setMaradeiteam(usert1[0].team);
         setMaradeireal(true)
@@ -527,10 +560,11 @@ function Card(){
         const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
         const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
         const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
+        const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*10)*2.05;
         const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
         const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 4.2 + AFT1 / 3.1) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 / 3.1 + AFT1 / 4.2) / 3;
+        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
+        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -561,6 +595,9 @@ function Card(){
               ovrt1 = Math.trunc(val_mcdt1);
             }
           }
+        }
+        if(ovrt1<CPT1){
+          ovrt1=Math.trunc(CPT1);
         }
         setMaster(ovrt1);
         setMasterteam(usert1[0].team);
@@ -645,10 +682,12 @@ function Card(){
     //))}
    // </select>
 
+   //{{backgroundImage: require(`../images/banners/${team.toString().toLowerCase()}.png`)}}
+
     return(
       <div>
         <div className="content-container">
-          <div className="fw-container bg-dark" style={{backgroundImage: require(`../images/banners/${team.toString().toLowerCase()}.png`)}} >
+          <div className="fw-container bg-dark" style={{backgroundImage: require(`../images/banners/0.png`)}} >
             <div className="container-large flex top-container">
               <div className="player-card player-card-shadow player-card-large bg-image2">
                 <div className="player-card-position">{pos}</div>
@@ -722,7 +761,7 @@ function Card(){
                       </button> : null}
                     </div>
                     <div>
-                      {t4real ? <button className="abutton" onClick={r => setTID(String("t4")) && setActualovr(t4)}> <li className="versions-list-el"> <span className="stat stat_tier_2" style={{backgroundColor: t4 >= 90 ? '#02fec5': t4 >= 85 && t4 < 90 ? '#a8fe02' : t4 >= 70 && t4 < 80 ? '#fbb206' : 'red' }}>
+                      {t4real ? <button className="abutton" onClick={r => setTID(String("t4")) && setActualovr(t4)}> <li className="versions-list-el"> <span className="stat stat_tier_2" style={{backgroundColor: t4 >= 90 ? '#02fec5': t4 >= 80 && t4 < 90 ? '#a8fe02' : t4 >= 70 && t4 < 80 ? '#fbb206' : 'red' }}>
                       {t4}</span>
                       <img className="club-flag versions-list-flag" src={require(`../images/clubs/${t4team.toString().toLowerCase()}.png`)} title={t4team} />
                       <span className="game">
@@ -781,7 +820,9 @@ function Card(){
                   // columns
                     battery: 'AP',
                     design: 'AD',
+                    poderio: 'CP',
                     useful: 'CC',
+                    
                   }}
                   data={[
                   // data
@@ -790,6 +831,7 @@ function Card(){
                         battery: ((goals*15+shotsontarget+assists*10)/matches)*2.05/100,
                         design: ((interceptions/matches)*2.5+(tacklescompleted/matches))*2.05/100,
                         useful: ((passescompleted+assists*10+possession*10)/matches)*2.05/100,
+                        poderio: ((savescaught/matches)*10)*2.05/100,
                       },
                       meta: { color: '#58FCEC' }
                     },
@@ -818,6 +860,12 @@ function Card(){
                     <div className="player-positions-item fw-2" style={{backgroundColor: val_def >= 85 ? '#00abd2': val_def >= 75 && val_def < 85 ? '#92c6d1' : 'white' }}> 
                       <span className="pos">CB</span>
                       <span className="stat ovr_12 stat_tier_3" style={{backgroundColor: 'rgba(250, 250, 250, 0.2)'}}>{Math.trunc(val_def)}</span>
+                    </div>
+                  </div>
+                  <div className="player-positions-row">
+                    <div className="player-positions-item fw-2" style={{backgroundColor: val_gk >= 85 ? '#00abd2': val_gk >= 75 && val_gk < 85 ? '#92c6d1' : 'white' }}> 
+                      <span className="pos">GK</span>
+                      <span className="stat ovr_12 stat_tier_3" style={{backgroundColor: 'rgba(250, 250, 250, 0.2)'}}>{Math.trunc(val_gk)}</span>
                     </div>
                   </div>
                 </div>

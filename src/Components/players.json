@@ -19,6 +19,10 @@
         { "id": "1", "name": "mbukke", "steam": "STEAM_0:0:56948573", "lore": "El negro nordico, dios rebotero, Main Master Yi"},
         { "id": "1", "name": "JBurruchaga", "steam": "STEAM_0:1:103282943", "lore": "Jugador y Árbitro. Defensor e hincha de Los Caballeros de la Birra para siempre."},
         { "id": "1", "name": "Tuvieja", "steam": "STEAM_0:1:198516942", "lore": "Defensor desde la beta"},
-        { "id": "1", "name": "Pitusa", "steam": "STEAM_0:1:444964845", "lore": "Joven Noble de los Rebotes"}
+        { "id": "1", "name": "Pitusa", "steam": "STEAM_0:1:444964845", "lore": "Joven Noble de los Rebotes"},
+        { "id": "1", "name": "cuca", "steam": "STEAM_0:1:129777573", "lore": "q hizo cuca"},
+        { "id": "1", "name": "Navarro", "steam": "STEAM_0:1:83759858", "lore": "q hizo cuca"},
+        { "id": "1", "name": "MatiLP", "steam": "STEAM_0:0:69043478", "lore": "q hizo cuca"},
+        { "id": "1", "name": "EL TRAPITO DROGA", "steam": "STEAM_0:0:104244544", "lore": "Arquero fanatico de LCB, hay dias buenos y dias malos, nunca rendirse y siempre mejorar, me verás volver y te arrodillaras."}
     ]
 }
