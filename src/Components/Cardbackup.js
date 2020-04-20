@@ -80,14 +80,15 @@ function Card(){
     const SteamAPI = require('steamapi');
     const steam = new SteamAPI('EC93B358FBCA4A90D62433C974003873');
 
+    // creamos la variable totaltime para determinar si tomar los partidos totales o los segundos jugados. 
+    // si los segundos jugados son mayores a los partidos jugados es porque hubo un error en las stats, por ende no se toman los valores
     const totaltime = secondsplayed/60/90 > matches ? matches : secondsplayed/60/90;
     console.log("a ver el totaltime");
     console.log(totaltime);
     console.log(secondsplayed/60/90);
     console.log(matches);
     // creamos la variable theteam para convertir el nombre del equipo a sus iniciales, y que de esta forma los banners sean visibles (se buguea si tiene espacios)
-    const theteam = team.toString().toLowerCase() == 
-    "meteors gaming" ? "mg" : 
+    const theteam = team.toString().toLowerCase() == "meteors gaming" ? "mg" : 
     team.toString().toLowerCase() == "coldchester fc" ? "ccfc" : 
     team.toString().toLowerCase() == "inter" ? "inter" : 
     team.toString().toLowerCase() == "galactic boys" ? "gb" : 
