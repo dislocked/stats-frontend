@@ -252,6 +252,7 @@ a.button:hover {
   top: 30px;
   left: 0;
   z-index: 4;
+  text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;
 }
 
 .player-card-position {
@@ -265,6 +266,7 @@ a.button:hover {
   top: 2px;
   left: 0;
   z-index: 4;
+  text-shadow: -0.5px -0.5px 0 #000, 0.5px -0.5px 0 #000, -0.5px 0.5px 0 #000, 0.5px 0.5px 0 #000;
 }
 
 .stats-col-1, .stats-col-2 {
@@ -375,7 +377,7 @@ h2 {
 
 .bg-image2 {
   /* The image used */
-  background-image: url("./images/stadium.png");
+  background-image: url("./images/bg/03.png");
 }
 
 .description {
@@ -595,12 +597,21 @@ td {
   border-spacing: 0 8px;
 }
 
+.player-card-club-featured {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 26%;
+  left: 4%;
+  z-index: 4;
+}
+
 .player-card-image-featured {
-  width: 90%;
-  height: 256px;
+  width: 100%;
+  height: 240px;
   position: absolute;
-  top: 0;
-  left: 10%;
+  bottom: 0;
+  left: 14%;
   z-index: 3;
 }
 

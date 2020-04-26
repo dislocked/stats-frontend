@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react'
+import {doSomethingWithInput, justAnAlert} from './Util.js'
+
 
 import * as SteamID from '@node-steam/id';
 import RadarChart from 'react-svg-radar-chart';
@@ -41,6 +43,16 @@ function Card(){
     const [goalsconceded, setGoalsconceded] = useState(0);
     const [secondsplayed, setSecondsplayed] = useState(0);
     const [totalmatches, setTotalmatches] = useState(0);
+
+    const [passavg, setPassavg] = useState(0);
+    const [assistavg, setAssistavg] = useState(0);
+    const [posavg, setPosavg] = useState(0);
+    const [attackassistavg, setAttackassistavg] = useState(0);
+    const [interavg, setInteravg] = useState(0);
+    const [tackleavg, setTackleavg] = useState(0);
+    const [finavg, setFinavg] = useState(0);
+    const [preavg, setPreavg] = useState(0);
+
     const [t0, setT0] = useState(0);
     const [t1, setT1] = useState(0);
     const [t2, setT2] = useState(0);
@@ -53,12 +65,15 @@ function Card(){
     const [t3real, setT3real] = useState(true);
     const [t4real, setT4real] = useState(true);
     const [t5real, setT5real] = useState(true);
+    const [america, setAmerica] = useState(0);
     const [maradei, setMaradei] = useState(0);
     const [master, setMaster] = useState(0);
     const [maradeireal, setMaradeireal] = useState(true);
     const [masterreal, setMasterreal] = useState(true);
+    const [americareal, setAmericareal] = useState(true);
     const [maradeiteam, setMaradeiteam] = useState(0);
     const [masterteam, setMasterteam] = useState(0);
+    const [americateam, setAmericateam] = useState(0);
     const [t0team, setT0team] = useState(0);
     const [t1team, setT1team] = useState(0);
     const [t2team, setT2team] = useState(0);
@@ -96,19 +111,41 @@ function Card(){
     team.toString().toLowerCase() == "layuve" ? "layuve" :
     team.toString().toLowerCase() == "ac milanesa" ? "acm" : "0"
     ;
+    const temporada = tID == 
+    "t1" ? "Temporada 1" : 
+    tID == "master" ? "Copa Master" : 
+    tID == "t2" ? "Temporada 2" : 
+    tID == "t3" ? "Temporada 3" : 
+    tID == "t4" ? "Temporada 4" :
+    tID == "t0" ? "Temporada 0" :
+    tID == "t5" ? "Temporada 5" :
+    tID == "maradei" ? "Copa Maradei" : 
+    tID == "copaamerica" ? "Copa America" :
+    "Total"
+    ;
     console.log(theteam);
-
+    
 
     // declaramos las formulas de las variables que usaremos a lo largo del programa, 
     // sus elementos cambian constantemente dependiendo el fetch que hagamos. por default es el fetch de todas las estadisticas
-    const AF = ((goals*15+shotsontarget+assists*10)/totaltime)*2.05;
-    const AD = ((interceptions/totaltime)*2.5+(tacklescompleted/totaltime))*2.05;
-    const CC = ((passescompleted+assists*10+possession*10)/totaltime)*2.05;
+    //const AF = ((goals*15+shotsontarget+assists*10)/totaltime)*2.05;
+    //const AD = ((interceptions/totaltime)*2.5+(tacklescompleted/totaltime))*2.05;
+    //const CC = ((passescompleted+assists*10+possession*10)/totaltime)*2.05;
     const CP = ((savescaught/totaltime)*9-(goalsconceded/totaltime))*2.05;
-    const val_def = (AD * 2.8 + AF / 3 + CC / 2.5)/3;
+  
+    //const CC = (passescompleted/totaltime*5+assists/totaltime*90+possession*7)/3
+    const CC = Math.round((passavg+assistavg+posavg)/3)
+    const AF = (finavg+preavg+attackassistavg)/3;
+    const AD = interavg;
+    /*const val_def = (AD * 2.8 + AF / 3 + CC / 2.5)/3;
     const val_del = ( AF * 2.8 + AD / 3 + CC / 2.5)/3;
     const val_mca = ( CC * 2.8 + AD / 5.8 + AF * 0.5) / 3;
     const val_mcd = ( CC * 2.8 + AD * 0.5 + AF / 5.8) / 3;
+    */
+    const val_def = (AD * 2.3 + AF / 2.5 + CC / 2)/3;
+    const val_del = ( AF * 2.3 + AD / 2.5 + CC / 2)/3;
+    const val_mca = ( CC + AF ) / 2;
+    const val_mcd = ( CC + AD ) / 2;
     const val_gk = CP;
     //const val_mca = ( CC * 2.8 + AD / 4.2 + AF / 3.1) / 3 formulas viejas;
     //const val_mcd = ( CC * 2.8 + AD / 3.1 + AF / 4.2) / 3;
@@ -151,7 +188,10 @@ function Card(){
       ovr = Math.trunc(CP);
     }
 
-    console.log(actualovr);
+    const contador = 0 + (t1real ? 1 : 0)+(t0real ? 1 : 0)+(t2real ? 1 : 0)+(t3real ? 1 : 0)+(t4real ? 1 : 0)+(t5real ? 1 : 0)+(maradeireal ? 1 : 0)+(masterreal ? 1 : 0)+(americareal ? 1 : 0);
+    const over = Math.round(( 0 + (t0real ? t0 : 0) + (t1real ? t1 : 0) + (t2real ? t2 : 0) + (t3real ? t3 : 0) + (t4real ? t4 : 0) + (t5real ? t5 : 0) + (masterreal ? master : 0) + (maradeireal ? maradei : 0)+ (americareal ? america : 0)));
+    const ovrtotal = tID == "all" ? (over == 0 ? ovr : Math.round(over/contador)) : ovr;
+    const CPtotal = tID == "all" ? Math.round(( 0 + (t0real ? t1 : 0) + (t1real ? t1 : 0) + (t2real ? t2 : 0) + (t3real ? t3 : 0) + (t4real ? t4 : 0) + (t5real ? t5 : 0) + (masterreal ? master : 0) + (maradeireal ? maradei : 0) + (americareal ? america : 0) ) / contador) : ovr;
 
     // if para determinar la posicion mas valorada
     if(val_def>=val_del){
@@ -224,10 +264,25 @@ function Card(){
       setSavescaught(user[0].savescaught);
       setGoalsconceded(user[0].goalsconceded);
       setSecondsplayed(user[0].secondsplayed);
-      const totaltime = user[0].secondsplayed/60/90 > user[0].matches ? user[0].matches : user[0].secondsplayed/60/90;
-      console.log(user[0]);
-      console.log("XD 2!");
-      console.log(totaltime);
+
+      const actualtime = user[0].secondsplayed/60/90 > user[0].matches ? user[0].matches : user[0].secondsplayed/60/90;
+      const PASS = Math.round(user[0].passescompleted/actualtime*5);
+      const ASISS = Math.round(user[0].assists/actualtime*140);
+      const TACKLE = Math.round(user[0].tacklescompleted/user[0].tackles*100*4.5);
+      const POSS = Math.round(user[0].possession*8);
+      const INTER = Math.round((user[0].interceptions/actualtime*2.5+user[0].tacklescompleted/actualtime)*2.05);
+      const FIN = Math.round(user[0].goals/actualtime*70);
+      const PRE = Math.round((user[0].shotsontarget/user[0].shots*100))
+      const ATASISS = Math.round(doSomethingWithInput(ASISS));
+      
+      console.log("ESTE ES EL PASS"+PASS+" ---- "+user[0].passescompleted/totaltime*5);
+      setFinavg(Math.round(doSomethingWithInput(FIN)));
+      setPassavg(Math.round(doSomethingWithInput(PASS)));
+      setAssistavg(Math.round(doSomethingWithInput(ASISS)));
+      setInteravg(Math.round(doSomethingWithInput(INTER)));
+      setPosavg(Math.round(doSomethingWithInput(POSS*0.97)));
+      setAttackassistavg(Math.round(doSomethingWithInput(ATASISS)));
+      setPreavg(Math.round(doSomethingWithInput(PRE)));
     }
 
     const fetchUser2 = async () => {
@@ -273,21 +328,38 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
       const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-      console.log("XD LOS MATCHES T1");
-      console.log(totaltime);
-      console.log(usert1[0].secondsplayed/60/90);
-      console.log(usert1[0].matches);
-      const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-      const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-      const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+      let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+      let ASISS = Math.round(usert1[0].assists/totaltime*140);
+      let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+      let POSS = Math.round(usert1[0].possession*8);
+      let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+      let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+      let FIN = Math.round(usert1[0].goals/totaltime*70);
+      let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+      
+      PASS = (Math.round(doSomethingWithInput(PASS)));
+      ASISS = (Math.round(doSomethingWithInput(ASISS)));
+      INTER = (Math.round(doSomethingWithInput(INTER)));
+      POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+      ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+      FIN = (Math.round(doSomethingWithInput(FIN)));
+      PRE = (Math.round(doSomethingWithInput(PRE)));
+
+      const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+      const ADT1 = INTER;
+      //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+      const CCT1 = (PASS+ASISS+POSS)/3;
       const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-      const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-      const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+      console.log("PORQUE MIERDA ME DA INFINITOOOO -> "+ ADT1 + " / " + AFT1 + " / " + CCT1);
+      const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+      const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+      const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+      const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+      const val_gkt1 = CPT1;
       let ovrt1;
       let pos;
       if(val_deft1>=val_delt1){
@@ -335,21 +407,37 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
       const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-      console.log("XD LOS MATCHES T2");
-      console.log(totaltime);
-      console.log(usert1[0].secondsplayed/60/90);
-      console.log(usert1[0].matches);
-      const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-      const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-      const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+      let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+      let ASISS = Math.round(usert1[0].assists/totaltime*140);
+      let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+      let POSS = Math.round(usert1[0].possession*8);
+      let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+      let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+      let FIN = Math.round(usert1[0].goals/totaltime*70);
+      let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+      
+      PASS = (Math.round(doSomethingWithInput(PASS)));
+      ASISS = (Math.round(doSomethingWithInput(ASISS)));
+      INTER = (Math.round(doSomethingWithInput(INTER)));
+      POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+      ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+      FIN = (Math.round(doSomethingWithInput(FIN)));
+      PRE = (Math.round(doSomethingWithInput(PRE)));
+
+      const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+      const ADT1 = INTER;
+      //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+      const CCT1 = (PASS+ASISS+POSS)/3;
       const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-      const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-      const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-      const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-      const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+      const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+      const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+      const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+      const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+      const val_gkt1 = CPT1;
       let ovrt1;
       let pos;
       if(val_deft1>=val_delt1){
@@ -397,21 +485,37 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
         const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-        console.log("XD LOS MATCHES T3");
-        console.log(totaltime);
-        console.log(usert1[0].secondsplayed/60/90);
-        console.log(usert1[0].matches);
-        const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-        const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-        const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
         const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-        const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-        const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -454,31 +558,42 @@ function Card(){
       }
     }
     
-    //FORMULAS VIEJAS: const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/usert1[0].matches)*2.05;
-    //    const ADT1 = ((usert1[0].interceptions/usert1[0].matches)*2.5+(usert1[0].tacklescompleted/usert1[0].matches))*2.05;
-    //    const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/usert1[0].matches)*2.05;
-    //    const CPT1 = ((usert1[0].savescaught/usert1[0].matches)*9-(usert1[0].goalsconceded/usert1[0].matches))*2.05;
-
     const fetcht4 = async () => {
       const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/t4`);
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
         const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-        console.log("XD LOS MATCHES T4");
-        console.log(totaltime);
-        console.log(usert1[0].secondsplayed/60/90);
-        console.log(usert1[0].matches);
-        const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-        const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-        const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
         const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-        const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-        const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -527,21 +642,37 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
         const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-        console.log("XD LOS MATCHES T5");
-        console.log(totaltime);
-        console.log(usert1[0].secondsplayed/60/90);
-        console.log(usert1[0].matches);
-        const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-        const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-        const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
         const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-        const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-        const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -590,21 +721,37 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
         const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-        console.log("XD LOS MATCHES T0");
-        console.log(totaltime);
-        console.log(usert1[0].secondsplayed/60/90);
-        console.log(usert1[0].matches);
-        const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-        const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-        const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
         const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-        const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-        const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -652,21 +799,37 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
         const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-        console.log("XD LOS MATCHES T0");
-        console.log(totaltime);
-        console.log(usert1[0].secondsplayed/60/90);
-        console.log(usert1[0].matches);
-        const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-        const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-        const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
         const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-        const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-        const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -714,21 +877,37 @@ function Card(){
       const usert1 = await apiCallt1.json();
       //call setName below to change the state 'name'
       //fetch para obtener los stats de la temporada / copa especificada
-      if(usert1[0] && usert1[0].matches > 3)
+      if(usert1[0] && usert1[0].matches >= 1)
       {
         const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
-        console.log("XD LOS MATCHES T0");
-        console.log(totaltime);
-        console.log(usert1[0].secondsplayed/60/90);
-        console.log(usert1[0].matches);
-        const AFT1 = ((usert1[0].goals*15+usert1[0].shotsontarget+usert1[0].assists*10)/totaltime)*2.05;
-        const ADT1 = ((usert1[0].interceptions/totaltime)*2.5+(usert1[0].tacklescompleted/totaltime))*2.05;
-        const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
         const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
-        const val_deft1 = (ADT1 * 2.8 + AFT1 / 3 + CCT1 / 2.5)/3;
-        const val_delt1 = ( AFT1 * 2.8 + ADT1 / 3 + CCT1 / 2.5)/3;
-        const val_mcat1 = ( CCT1 * 2.8 + ADT1 / 5.8 + AFT1 * 0.5) / 3;
-        const val_mcdt1 = ( CCT1 * 2.8 + ADT1 * 0.5 + AFT1 / 5.8) / 3;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
         let ovrt1;
         let pos;
         if(val_deft1>=val_delt1){
@@ -770,6 +949,84 @@ function Card(){
         setMasterreal(false)
       }
     }
+    
+    const fetchamerica = async () => {
+      const apiCallt1 = await fetch (`https://stats.iosoccer-sa.bid/api/player/${playerID}/copaamerica`);
+      const usert1 = await apiCallt1.json();
+      //call setName below to change the state 'name'
+      //fetch para obtener los stats de la temporada / copa especificada
+      if(usert1[0] && usert1[0].matches > 3)
+      {
+        const totaltime = usert1[0].secondsplayed/60/90 > usert1[0].matches ? usert1[0].matches : usert1[0].secondsplayed/60/90;
+
+        let PASS = Math.round(usert1[0].passescompleted/totaltime*5);
+        let ASISS = Math.round(usert1[0].assists/totaltime*140);
+        let TACKLE = Math.round(usert1[0].tacklescompleted/usert1[0].tackles*100*4.5);
+        let POSS = Math.round(usert1[0].possession*8);
+        let INTER = Math.round((usert1[0].interceptions/totaltime*2.5+usert1[0].tacklescompleted/totaltime)*2.05);
+        let ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        let FIN = Math.round(usert1[0].goals/totaltime*70);
+        let PRE = Math.round((usert1[0].shotsontarget/usert1[0].shots*100));
+        
+        PASS = (Math.round(doSomethingWithInput(PASS)));
+        ASISS = (Math.round(doSomethingWithInput(ASISS)));
+        INTER = (Math.round(doSomethingWithInput(INTER)));
+        POSS = (Math.round(doSomethingWithInput(POSS*0.97)));
+        ATTACKASISS = (Math.round(doSomethingWithInput(ASISS)));
+        FIN = (Math.round(doSomethingWithInput(FIN)));
+        PRE = (Math.round(doSomethingWithInput(PRE)));
+  
+        const AFT1 = (FIN+PRE+ATTACKASISS)/3;
+        const ADT1 = INTER;
+        //const CCT1 = ((usert1[0].passescompleted+usert1[0].assists*10+usert1[0].possession*10)/totaltime)*2.05;
+        const CCT1 = (PASS+ASISS+POSS)/3;
+        const CPT1 = ((usert1[0].savescaught/totaltime)*9-(usert1[0].goalsconceded/totaltime))*2.05;
+        const val_deft1 = (ADT1 * 2.3 + AFT1 / 2.5 + CCT1 / 2)/3;
+        const val_delt1 = ( AFT1 * 2.3 + ADT1 / 2.5 + CCT1 / 2)/3;
+        const val_mcat1 = ( CCT1 + AFT1 ) / 2;
+        const val_mcdt1 = ( CCT1 + ADT1 ) / 2;
+        const val_gkt1 = CPT1;
+        let ovrt1;
+        let pos;
+        if(val_deft1>=val_delt1){
+          if(val_deft1>=val_mcat1){
+            if(val_deft1>=val_mcdt1){
+              ovrt1 = Math.trunc(val_deft1);
+            }else{
+              ovrt1 = Math.trunc(val_mcdt1);
+            }
+          }else{
+            if(val_mcat1>=val_mcdt1){
+              ovrt1 = Math.trunc(val_mcat1);
+            }else{
+              ovrt1 = Math.trunc(val_mcdt1);
+            }
+          }
+        }else{
+          if(val_delt1>=val_mcat1){
+            if(val_delt1>=val_mcdt1){
+              ovrt1 = Math.trunc(val_delt1);
+            }else{
+              ovrt1 = Math.trunc(val_mcdt1);
+            }
+          }else{
+            if(val_mcat1>=val_mcdt1){
+              ovrt1 = Math.trunc(val_mcat1);
+            }else{
+              ovrt1 = Math.trunc(val_mcdt1);
+            }
+          }
+        }
+        if(ovrt1<CPT1){
+          ovrt1=Math.trunc(CPT1);
+        }
+        setAmerica(ovrt1);
+        setAmericateam(usert1[0].team);
+        setAmericareal(true);
+      }else{
+        setAmericareal(false);
+      }
+    }
 
     useEffect(() => {
       fetchUser();
@@ -782,6 +1039,7 @@ function Card(){
       fetcht0();
       fetchmaradei();
       fetchmaster();
+      fetchamerica();
     }, [playerID])
     
     useEffect(() => {
@@ -795,6 +1053,7 @@ function Card(){
       fetcht0();
       fetchmaradei();
       fetchmaster();
+      fetchamerica();
     }, [tID])
 
     const data = [
@@ -851,21 +1110,10 @@ function Card(){
    //{{backgroundImage: require(`../images/banners/${team.toString().toLowerCase()}.png`)}} backgroundSize: '50%'
    //`url(` + require(`../images/banners/${team.toString().toLowerCase()}.png`) + `)`
     // declaramos un contador y un ovrtotal para poner los promedios del overall
-   const contador= 0 + (t1real ? 1 : 0)+(t0real ? 1 : 0)+(t2real ? 1 : 0)+(t3real ? 1 : 0)+(t4real ? 1 : 0)+(t5real ? 1 : 0)+(maradeireal ? 1 : 0)+(masterreal ? 1 : 0);
-   const ovrtotal = tID == "all" ? Math.round(( 0 + (t0real ? t0 : 0) + (t1real ? t1 : 0) + (t2real ? t2 : 0) + (t3real ? t3 : 0) + (t4real ? t4 : 0) + (t5real ? t5 : 0) + (masterreal ? master : 0) + (maradeireal ? maradei : 0) ) / contador) : ovr;
-
-    return(
-      <div>
-        <div className="content-container">
-          <div className="fw-container bg-dark" style={{ backgroundImage: `url(` + require(`../images/banners/${theteam}.png`) + `)` , backgroundSize: '70%', backgroundPosition: '43% 50%', backgroundRepeat: 'no-repeat', borderRight: ''}} >
-            <div className="container-large flex top-container">
-              <div className="player-card player-card-shadow player-card-large bg-image2">
-                <div className="player-card-position">{pos}</div>
-                <div className="player-card-ovr">{ovrtotal}</div>
-                <div className="player-card-name">{name}</div>
-                <img className="player-card-image-featured" src={require(`../images/cartas/${id}.png`)}></img>
-                {console.log(steamID)};
-                <div className="stats-col-1">
+   
+   
+   
+    /* <div className="stats-col-1">
                   {Math.trunc(AF)}
                   <span className="player-card-stats-name"> AP</span>
                   <br></br>
@@ -882,13 +1130,31 @@ function Card(){
                 </div>
                 <div className="stats-col-bg"></div>
               </div>
+              <tr>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: tacklescompleted >= 15 ? '#02fec5': tacklescompleted >= 10 && tacklescompleted < 15 ? '#a8fe02' : tacklescompleted >= 5 && tacklescompleted < 10 ? '#fbb206' : 'red' }}>{Math.trunc(tacklescompleted)}</td>
+                          <td>Entradas completadas</td>
+              </tr>
+              */
+
+    return(
+      <div>
+        <div className="content-container">
+          <div className="fw-container bg-dark" style={{ backgroundImage: `url(` + require(`../images/banners/${theteam}.png`) + `)` , backgroundSize: '70%', backgroundPosition: '43% 50%', backgroundRepeat: 'no-repeat', borderRight: ''}} >
+            <div className="container-large flex top-container">
+              <div className="player-card player-card-shadow player-card-large bg-image2" style={{ backgroundImage: ovrtotal >= 90 ? `url(` + require(`../images/bg/0.png`) + `)`: ovrtotal >= 80 && ovrtotal < 90 ? `url(` + require(`../images/bg/03.png`) + `)` : ovrtotal >= 70 && ovrtotal < 80 ? `url(` + require(`../images/bg/05.png`) + `)` : `url(` + require(`../images/bg/05.png`) + `)`}}>
+                <div className="player-card-position">{pos}</div>
+                <div className="player-card-ovr">{ovrtotal}</div>
+                <div className="player-card-name">{name}</div>
+                <img className="player-card-club-featured" src={require(`../images/clubs/${team.toString().toLowerCase()}.png`)}></img>
+                <img className="player-card-image-featured" src={require(`../images/cartas/${id}.png`)}></img>
+              </div>
               <div className="top-info">
                 <h1 className="top-header">
                   <span className="ovr stat_tier_3" style={{backgroundColor: ovrtotal >= 90 ? '#02fec5': ovrtotal >= 80 && ovrtotal < 90 ? '#a8fe02' : ovrtotal >= 70 && ovrtotal < 80 ? '#fbb206' : 'red' }}>{ovrtotal}</span>
                   <span>&nbsp;</span>{name}
                 </h1>
-                <h2 className="subtle-text">{name} IOSoccer {tID} Stats</h2>
-                <p className="description subtle-text">{name} es un futbolista con una media de {ovr} en la posicion de {pos}. {name} es un jugador perteneciente al equipo {team} de IOSoccer.</p>
+                <h2 className="subtle-text">{name} IOSoccer {temporada} Stats</h2>
+                <p className="description subtle-text">{name} es un futbolista con una media de {ovrtotal} en la posicion de {pos}. {name} es un jugador perteneciente al equipo {team} de IOSoccer.</p>
                 <div>
                   <ul className="versions-list">
                     <div>
@@ -976,6 +1242,17 @@ function Card(){
                       </li>
                       </button> : null}
                     </div>
+                    <div>
+                      {americareal ? <button className="abutton" onClick={r => setTID(String("copaamerica"))}>
+                      <li className="versions-list-el">
+                      <span className="stat stat_tier_2" style={{backgroundColor: america >= 90 ? '#02fec5': america >= 80 && america < 90 ? '#a8fe02' : america >= 70 && america < 80 ? '#fbb206' : 'red' }}>
+                      {america}</span>
+                      <img className="club-flag versions-list-flag" src={require(`../images/clubs/${americateam.toString().toLowerCase()}.png`)} title={americateam} />
+                      <span className="game">
+                      Copa America</span>
+                      </li>
+                      </button> : null}
+                    </div>
                   <li className="versions-list-el">
                   <button className="abutton" onClick={r => setTID(String("all"))}>
                   <span className="game">Mostrar todo</span>
@@ -1015,10 +1292,10 @@ function Card(){
                   // data
                     {
                       data: {
-                        battery: ((goals*15+shotsontarget+assists*10)/matches)*2.05/100,
-                        design: ((interceptions/matches)*2.5+(tacklescompleted/matches))*2.05/100,
-                        useful: ((passescompleted+assists*10+possession*10)/matches)*2.05/100,
-                        poderio: ((savescaught/matches)*9-(goalsconceded/matches))*2.05/100,
+                        battery: AF/100,
+                        design: AD/100,
+                        useful: CC/100,
+                        poderio: CP/100,
                       },
                       meta: { color: '#58FCEC' }
                     },
@@ -1076,6 +1353,10 @@ function Card(){
                     <td>{matches}</td>
                   </tr>
                   <tr>
+                    <td>Partidos Reales</td>
+                    <td>{Math.round(totaltime)}</td>
+                  </tr>
+                  <tr>
                     <td>Posicion</td>
                     <td>{pos}</td>
                   </tr>
@@ -1099,6 +1380,10 @@ function Card(){
                     <td>Atajadas</td>
                     <td>{saves}</td>
                   </tr>
+                  <tr>
+                    <td>Posesion</td>
+                    <td>{Math.round(possession)}%</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -1108,7 +1393,7 @@ function Card(){
                 <div className="flex flex-wrap stats-block-container">
                   <div className="stats-block">
                     <h4>
-                      <span className="stat_tier_2 stat" style={{backgroundColor: AF >= 90 ? '#02fec5': AF >= 80 && AF < 90 ? '#a8fe02' : AF >= 70 && AF < 80 ? '#fbb206' : 'red' }}>{Math.trunc(AF)}</span>
+                      <span className="stat_tier_2 stat" style={{backgroundColor: AF >= 90 ? '#02fec5': AF >= 80 && AF < 90 ? '#a8fe02' : AF >= 70 && AF < 80 ? '#fbb206' : 'red' }}>{Math.round(AF)}</span>
                       Poder Ofensivo
                     </h4>
                     <div className="star-bar" style={{background: '#e6e6e6', height: '8px', position: 'relative', borderRadius: '5px', marginBottom: '15px', width: '400px'}}>
@@ -1117,15 +1402,15 @@ function Card(){
                     <table className="player-stats-modern">
                       <tbody>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: goals/matches*40 >= 90 ? '#02fec5': goals/matches*40 >= 80 && goals/matches*4 < 90 ? '#a8fe02' : goals/matches*40 >= 70 && goals/matches*40 < 80 ? '#fbb206' : 'red' }}>{Math.trunc(goals/matches*40)}</td>
+                <td className="stat_tier_3 stat" style={{backgroundColor: finavg >= 90 ? '#02fec5': finavg >= 80 && finavg < 90 ? '#a8fe02' : finavg >= 70 && finavg < 80 ? '#fbb206' : 'red' }}>{finavg}</td>
                           <td>Finalizacion</td>
                         </tr>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: (shotsontarget/shots* 100) >= 80 ? '#02fec5': (shotsontarget/shots* 100) >= 60 && (shotsontarget/shots* 100) < 80 ? '#a8fe02' : (shotsontarget/shots* 100) >= 40 && (shotsontarget/shots* 100) < 60 ? '#fbb206' : 'red' }}>{Math.trunc(shotsontarget/shots* 100)}</td>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: preavg >= 80 ? '#02fec5': preavg >= 60 && preavg < 80 ? '#a8fe02' : preavg >= 40 && preavg < 60 ? '#fbb206' : 'red' }}>{preavg}</td>
                           <td>Precision</td>
                         </tr>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: (assists/matches*90) >= 90 ? '#02fec5': (assists/matches*90) >= 80 && (assists/matches*90) < 90 ? '#a8fe02' : (assists/matches*90) >= 70 && (assists/matches*90) < 80 ? '#fbb206' : 'red' }}>{Math.trunc(assists/matches*90)}</td>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: attackassistavg >= 90 ? '#02fec5': attackassistavg >= 80 && attackassistavg < 90 ? '#a8fe02' : attackassistavg >= 70 && attackassistavg < 80 ? '#fbb206' : 'red' }}>{attackassistavg}</td>
                           <td>Asistidor</td>
                         </tr>
                       </tbody>
@@ -1142,23 +1427,19 @@ function Card(){
                     <table className="player-stats-modern">
                       <tbody>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: (interceptions/matches) >= 15 ? '#02fec5': interceptions/matches >= 10 && interceptions/matches < 15 ? '#a8fe02' : interceptions/matches >= 5 && interceptions/matches < 10 ? '#fbb206' : 'red' }}>{Math.trunc(interceptions/matches*5.4)}</td>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: interavg >= 90 ? '#02fec5': interavg >= 80 && interavg < 90 ? '#a8fe02' : interavg >= 70 && interavg < 80 ? '#fbb206' : 'red' }}>{interavg}</td>
                           <td>Recuperacion de Pelota</td>
                         </tr>
                         <tr>
                           <td className="stat_tier_3 stat" style={{backgroundColor: tacklescompleted/tackles*100 >= 25 ? '#02fec5': tacklescompleted/tackles*100 >= 20 && tacklescompleted/tackles*100 < 25 ? '#a8fe02' : tacklescompleted/tackles*100 >= 15 && tacklescompleted/tackles*100 < 20 ? '#fbb206' : 'red' }}>{Math.trunc(tacklescompleted/tackles*100)}%</td>
                           <td>Efectividad de Entradas</td>
                         </tr>
-                        <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: tacklescompleted >= 15 ? '#02fec5': tacklescompleted >= 10 && tacklescompleted < 15 ? '#a8fe02' : tacklescompleted >= 5 && tacklescompleted < 10 ? '#fbb206' : 'red' }}>{Math.trunc(tacklescompleted)}</td>
-                          <td>Entradas completadas</td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
                   <div className="stats-block">
                     <h4>
-                      <span className="stat_tier_2 stat" style={{backgroundColor: CC >= 90 ? '#02fec5': CC >= 80 && CC < 90 ? '#a8fe02' : CC >= 70 && CC < 80 ? '#fbb206' : 'red' }}>{Math.trunc(CC)}</span>
+                      <span className="stat_tier_2 stat" style={{backgroundColor: CC >= 90 ? '#02fec5': CC >= 80 && CC < 90 ? '#a8fe02' : CC >= 70 && CC < 80 ? '#fbb206' : 'red' }}>{Math.round(CC)}</span>
                       Capacidad Creativa
                     </h4>
                     <div className="star-bar" style={{background: '#e6e6e6', height: '8px', position: 'relative', borderRadius: '5px', marginBottom: '15px', width: '400px'}}>
@@ -1167,15 +1448,16 @@ function Card(){
                     <table className="player-stats-modern">
                       <tbody>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: (passescompleted/matches*5) >= 90 ? '#02fec5': (passescompleted/matches*5) >= 80 && (passescompleted/matches*5) < 90 ? '#a8fe02' : (passescompleted/matches*5) >= 70 && (passescompleted/matches*5) < 80 ? '#fbb206' : 'red' }}>{Math.trunc(passescompleted/matches*5)}</td>
-                          <td>Pasador</td>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: passavg >= 90 ? '#02fec5': passavg >= 80 && passavg < 90 ? '#a8fe02' : passavg >= 70 && passavg < 80 ? '#fbb206' : 'red' }}>{passavg}</td>
+                          <td>Pasador
+                          </td>
                         </tr>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: (assists/matches*90) >= 90 ? '#02fec5': (assists/matches*90) >= 80 && (assists/matches*90) < 90 ? '#a8fe02' : (assists/matches*90) >= 70 && (assists/matches*90) < 80 ? '#fbb206' : 'red' }}>{Math.trunc(assists/matches*90)}</td>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: assistavg >= 90 ? '#02fec5': assistavg >= 80 && assistavg < 90 ? '#a8fe02' : assistavg >= 70 && assistavg < 80 ? '#fbb206' : 'red' }}>{assistavg}</td>
                           <td>Asistidor</td>
                         </tr>
                         <tr>
-                          <td className="stat_tier_3 stat" style={{backgroundColor: possession >= 12 ? '#02fec5': possession >= 8 && possession < 12 ? '#a8fe02' : possession >= 5 && possession < 8 ? '#fbb206' : 'red' }}>{Math.trunc(possession*7)}</td>
+                          <td className="stat_tier_3 stat" style={{backgroundColor: posavg >= 90 ? '#02fec5': posavg >= 80 && posavg < 90 ? '#a8fe02' : posavg >= 70 && posavg < 80 ? '#fbb206' : 'red'}}>{posavg}</td>
                           <td>Posesion</td>
                         </tr>
                       </tbody>

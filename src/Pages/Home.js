@@ -61,7 +61,7 @@ class Home extends React.Component {
     const players = require("../Components/players.json");
     
     if (this.state.loading) {
-      return <div>loading ...</div>
+      return <div><img>src={require(`../images/iossa.gif`)}</img>loading ...</div>
     }
     
     //<Avatar />

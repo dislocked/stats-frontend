@@ -62,7 +62,10 @@ class Profile extends React.Component {
     const players = require("../Components/players.json");
     
     if (this.state.loading) {
-      return <div>loading ...</div>
+      return <div style={{textAlign: 'center', fontSize: '30px'}}>
+        <img src={require(`../images/iossa.gif`)} style={{position: 'relative', display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: '100px'}}></img> 
+        Cargando base de datos
+        </div>
     }
     
     if (!this.state.loading) { 
