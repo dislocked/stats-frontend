@@ -1,6 +1,6 @@
 {
-  "homepage": "http://dislocked.github.io/my-app",
-  "name": "my-app",
+  "homepage": "http://dislocked.github.io/profile",
+  "name": "IOSoccerStats",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
